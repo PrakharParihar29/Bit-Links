@@ -1,4 +1,4 @@
-import clientPromise from "@/lib/mongodb"
+import { connectDB } from "@/lib/mongodb"
 
 export async function POST(request) {
   try {
@@ -31,7 +31,7 @@ export async function POST(request) {
       )
     }
 
-    const client = await clientPromise
+    const client = await connectDB()
     const db = client.db("bit-links")
     const collection = db.collection("url")
 

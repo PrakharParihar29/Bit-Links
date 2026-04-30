@@ -1,11 +1,11 @@
-import clientPromise from "@/lib/mongodb"
+import { connectDB } from "@/lib/mongodb"
 import { redirect } from "next/navigation"
 
 export default async function Page({ params }) {
     const { shorturl } = await params
 
     try {
-        const client = await clientPromise
+        const client = await connectDB()
         const db = client.db("bit-links")
         const collection = db.collection("url")
 
