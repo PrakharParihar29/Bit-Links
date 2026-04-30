@@ -9,37 +9,58 @@ const Shorten = () => {
   const [shorturl, setShortUrl] = useState("")
   const [generated, setGenerated] = useState("")
 
-  const generate = () => {
-    const myHeaders = new Headers()
-    myHeaders.append("Content-Type", "application/json")
-
-    const raw = JSON.stringify({ url, shorturl })
-
-    const requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow"
+  const generate = async () => {
+    if (!url || !shorturl) {
+      toast('Please fill in both fields', {
+        style: {
+          background: '#fff',
+          color: '#9333ea',
+          fontWeight: 'bold',
+          borderRadius: '8px',
+          padding: '12px 16px',
+        },
+      })
+      return
     }
 
-    fetch("/api/generate", requestOptions)
-      .then((response) => response.json())
-      .then((result) => {
-        setUrl("")
-        setShortUrl("")
-        setGenerated(`${process.env.NEXT_PUBLIC_HOST}/${shorturl}`)
-        console.log(result)
-        toast(result.message, {
-          style: {
-            background: "#fff",
-            color: "#9333ea",
-            fontWeight: "bold",
-            borderRadius: "8px",
-            padding: "12px 16px",
-          },
-        })
+    try {
+      const response = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url, shorturl }),
       })
-      .catch((error) => console.error(error))
+
+      const result = await response.json()
+
+      if (result.success) {
+        // Use the sanitized shorturl returned from the API
+        setGenerated(`${process.env.NEXT_PUBLIC_HOST}/${result.shorturl}`)
+        setUrl('')
+        setShortUrl('')
+      } else {
+        setGenerated('')
+      }
+
+      toast(result.message, {
+        style: {
+          background: '#fff',
+          color: '#9333ea',
+          fontWeight: 'bold',
+          borderRadius: '8px',
+          padding: '12px 16px',
+        },
+      })
+    } catch {
+      toast('Something went wrong. Please try again.', {
+        style: {
+          background: '#fff',
+          color: '#ef4444',
+          fontWeight: 'bold',
+          borderRadius: '8px',
+          padding: '12px 16px',
+        },
+      })
+    }
   }
 
   return (
