@@ -4,6 +4,8 @@ import { redirect } from "next/navigation"
 export default async function Page({ params }) {
     const { shorturl } = await params
 
+    let urlToRedirect = null
+
     try {
         const client = await connectDB()
         const db = client.db("bit-links")
@@ -11,10 +13,15 @@ export default async function Page({ params }) {
 
         const doc = await collection.findOne({ shorturl: shorturl })
         if (doc) {
-            redirect(doc.url)
+            urlToRedirect = doc.url
         }
     } catch (error) {
-        console.error('[shorturl redirect] Error:', error)
+        // Only log actual database errors, ignore the redirect error if we were to call it here
+        console.error('[shorturl redirect] Database Error:', error)
+    }
+
+    if (urlToRedirect) {
+        redirect(urlToRedirect)
     }
 
     // Fallback: redirect to home if not found or on error
