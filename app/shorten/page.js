@@ -64,16 +64,16 @@ const Shorten = () => {
   }
 
   return (
-    <div className="min-h-[91.3vh] flex items-center justify-center bg-linear-to-br from-purple-100 via-purple-200 to-purple-300">
-      <div className="mx-auto max-w-lg bg-white/80 backdrop-blur-md p-10 rounded-2xl shadow-2xl flex flex-col gap-6 animate-fadeIn">
-        <h1 className="font-extrabold text-3xl text-purple-700 text-center drop-shadow-md">
+    <div className="min-h-[91.3vh] flex items-center justify-center bg-linear-to-br from-purple-100 via-purple-200 to-purple-300 p-4 sm:p-6">
+      <div className="mx-auto w-full max-w-lg bg-white/80 backdrop-blur-md p-6 sm:p-10 rounded-2xl shadow-2xl flex flex-col gap-6 animate-fadeIn">
+        <h1 className="font-extrabold text-2xl sm:text-3xl text-purple-700 text-center drop-shadow-md">
           ✨ Generate Your Short URLs
         </h1>
 
         <div className="flex flex-col gap-4">
           <input
             type="text"
-            className="px-4 py-3 rounded-md border border-purple-300 focus:ring-2 focus:ring-purple-500 focus:outline-none transition-all duration-300"
+            className="px-4 py-3 rounded-md border border-purple-300 focus:ring-2 focus:ring-purple-500 focus:outline-none transition-all duration-300 text-sm sm:text-base"
             placeholder="Enter your URL"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
@@ -81,7 +81,7 @@ const Shorten = () => {
           <input
             type="text"
             value={shorturl}
-            className="px-4 py-3 rounded-md border border-purple-300 focus:ring-2 focus:ring-purple-500 focus:outline-none transition-all duration-300"
+            className="px-4 py-3 rounded-md border border-purple-300 focus:ring-2 focus:ring-purple-500 focus:outline-none transition-all duration-300 text-sm sm:text-base"
             placeholder="Enter your preferred short text"
             onChange={(e) => setShortUrl(e.target.value)}
           />
@@ -97,8 +97,8 @@ const Shorten = () => {
         {generated && (
           <div className="mt-6 text-center">
             <span className="font-bold text-lg text-purple-700">Your Link:</span>
-            <p className="mt-2">
-              <code className="bg-white px-3 py-2 rounded-md shadow-md text-purple-600 font-semibold">
+            <p className="mt-2 overflow-hidden">
+              <code className="bg-white px-3 py-2 rounded-md shadow-md text-purple-600 font-semibold block break-all text-xs sm:text-sm">
                 <Link target="_blank" href={generated}>
                   {generated}
                 </Link>
